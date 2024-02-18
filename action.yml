@@ -1,0 +1,22 @@
+name: 'Quartus Compilation Flow'
+description: 'A GitHub Action for Quartus RTL Synthesis'
+inputs:
+  project:
+    description: 'Project Name'
+    required: true
+  version:
+    description: 'Quartus Version/Alias'
+    required: false
+    default: "17.1"
+  project_folder:
+    description: 'Project Folder'
+    required: false
+    default: "projects"
+runs:
+  using: 'composite'
+  steps:
+    - name: "Compilation Flow"
+      shell: bash
+      run: |
+        docker run --rm -v ${{ github.workspace }}:/build raetro/quartus:${{ inputs.version }} \
+        quartus_sh --flow compile ${{ inputs.project_folder }}/${{ inputs.project }}.qpf
