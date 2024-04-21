@@ -24,7 +24,9 @@ runs:
       run: |
         revision_cmd=""
         if [ -n "${{ inputs.revision }}" ]; then
-          revision_cmd="-c ${{ inputs.revision }}"
+          revision_cmd=" -c ${{ inputs.revision }}"
         fi
-        docker run --rm -v ${{ github.workspace }}:/build raetro/quartus:${{ inputs.version }} \
-        quartus_sh --flow compile ${{ inputs.project_folder }}/${{ inputs.project }} $revision_cmd
+
+        cmd="docker run --rm -v ${{ github.workspace }}:/build raetro/quartus:${{ inputs.version }} quartus_sh --flow compile ${{ inputs.project_folder }}/${{ inputs.project }}${revision_cmd}"
+        echo "Running command: $cmd"
+        eval $cmd
